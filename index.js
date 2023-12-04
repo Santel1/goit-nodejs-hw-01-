@@ -17,19 +17,33 @@ async function invokeAction({ action, id, name, email, phone }) {
   try {
     switch (action) {
       case "list":
-        contacts.listContacts();
+        const allContacts = await contacts.listContacts();
+        console.table(allContacts);
         break;
 
       case "get":
-        contacts.getContactById(id);
+        const contactById = await contacts.getContactById(id);
+        if (contactById) {
+          console.table([contactById]);
+        } else {
+          console.log("Contact not found.");
+        }
         break;
 
       case "add":
-        contacts.addContact(name, email, phone);
+        const newContact = await contacts.addContact(name, email, phone);
+        console.log("New contact added:");
+        console.table([newContact]);
         break;
 
       case "remove":
-        contacts.removeContact(id);
+        const removedContact = await contacts.removeContact(id);
+        if (removedContact) {
+          console.log("Removed contact:");
+          console.table([removedContact]);
+        } else {
+          console.log("Contact not found.");
+        }
         break;
 
       default:
